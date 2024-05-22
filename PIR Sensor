@@ -1,0 +1,32 @@
+
+// Define pin connections
+const int pirPin = 2; // Digital pin connected to the PIR sensor
+const int ledPin = 13;    // Digital pin connected to the LED
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(9600);
+  
+  // Initialize LED pin as output
+  pinMode(ledPin, Output);
+
+  // Initialize PIR pin as input
+  pinMode(pirPin, Input);
+}
+
+void loop() {
+  // Read the state of the PIR sensor
+  int motionDetected = digitalRead(pirPin);
+  
+  // Print the result to the serial monitor
+  if (motionDetected == Low) {
+    Serial.println("Motion detected!");
+    digitalWrite(ledPin, Low); // Turn on the LED
+  } else {
+    Serial.println("No motion detected.");
+    digitalWrite(ledPin, Low); // Turn off the LED
+  }
+  
+  // Add a delay to prevent rapid readings
+  delay(500); // Adjust delay as needed
+}
