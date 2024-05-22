@@ -1,0 +1,49 @@
+// Define pin connections
+const int trigPin = 9; // Digital pin connected to the trigger pin of the HC-SR04
+const int echoPin = 10; // Digital pin connected to the echo pin of the HC-SR04
+const int ledPin = 13; // Digital pin connected to the LED - nothing to do here, this uses the built-in LED as a indicator
+
+void setup() {
+  // Initialize serial communication - use the serial monitor on the IDE to see the results
+  Serial.begin(9600);
+  
+  // Initialize LED pin as output
+  pinMode(ledPin, INPUT);
+
+  // Initialize HC-SR04 pins
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+void loop() {
+  // Trigger the HC-SR04 to send a ultrasonic pulse
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Measure the duration of the pulse
+  long duration = pulseIn(echoPin, HIGH);
+
+  // Calculate distance in centimeters
+  float distance = duration * 0.034 / 2;
+
+  // Print distance to serial monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Check if an object is within 50cm
+  if (distance >= 50) {
+    Serial.println("Object detected!");
+    digitalWrite(ledPin, HIGH); // Turn on the LED
+  } else {
+    Serial.println("No object detected.");
+    digitalWrite(ledPin, LOW); // Turn off the LED
+  }
+
+  // Add a short delay before the next reading
+  delay(100);
+}
+//load the code and watch the serial monitor. Test the sensitivity of the HR sensor
